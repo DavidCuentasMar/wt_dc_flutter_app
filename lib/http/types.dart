@@ -27,3 +27,20 @@ class CheckTokenResponse {
     );
   }
 }
+
+class BasicCourseInfo {
+  int id;
+  String name;
+  String professor;
+  int students;
+
+  BasicCourseInfo({this.id, this.name, this.professor, this.students});
+
+  factory BasicCourseInfo.fromJson(Map<String, dynamic> json) {
+    return BasicCourseInfo(
+        id: json['id'],
+        name: json['name'],
+        professor: json['professor'],
+        students: json['students']);
+  }
+}
