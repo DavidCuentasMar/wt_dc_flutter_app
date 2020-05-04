@@ -50,3 +50,13 @@ Future<List<BasicCourseInfo>> showCourses(String token, String dbId) async {
   if (response.statusCode != 200) throw Exception(response.body);
   return List<BasicCourseInfo>.from(jsonDecode(response.body));
 }
+
+Future<Course> getCourse(String token, String dbId, String id) async {
+  var response = await http.get("$BASE/$dbId/$id", headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode != 200) throw Exception(response.body);
+  return Course.fromJson(jsonDecode(response.body));
+}
