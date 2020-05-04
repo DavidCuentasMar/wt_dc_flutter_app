@@ -5,6 +5,8 @@ import 'package:wt_dc_app/models/user_model.dart';
 import 'package:wt_dc_app/screens/auth_screen.dart';
 import 'package:wt_dc_app/screens/home_screen.dart';
 
+import 'screens/sign_in_screen.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -41,7 +43,8 @@ class MyApp extends StatelessWidget {
               '/': (context) =>
                   currentUser.isLogged ? homeScreen : AuthScreen(),
               '/home': (context) => homeScreen,
-              '/auth': (context) => AuthScreen()
+              '/auth': (context) => AuthScreen(),
+              '/signin': (context) => SignInScreen()
             },
           );
         },
