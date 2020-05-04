@@ -30,7 +30,7 @@ Future<CheckTokenResponse> checkToken(String token) async {
   var response = await http.post("$BASE/check/token", headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': 'Bearer $token'
-  })
-  
+  });
+
   return CheckTokenResponse.fromJson(jsonDecode(response.body));
 }
