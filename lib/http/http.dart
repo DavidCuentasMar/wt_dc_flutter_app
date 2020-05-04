@@ -4,6 +4,8 @@ import "package:wt_dc_app/http/types.dart";
 
 const String BASE = "https://movil-api.herokuapp.com";
 
+// AUTH
+
 Future<AuthResponse> signIn({String email, String password}) async {
   var response = await http.post("$BASE/signin",
       body: jsonEncode({'email': email, 'password': password}),
@@ -34,4 +36,27 @@ Future<CheckTokenResponse> checkToken(String token) async {
   });
 
   return CheckTokenResponse.fromJson(jsonDecode(response.body));
+}
+
+// COURSES
+
+Future<List<BasicCourseInfo>> showCourses(String token, String dbId) async {
+  var response =
+      await http.get("$BASE/$dbId/courses", headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode != 200) throw Exception(response.body);
+  return List<BasicCourseInfo>.from(jsonDecode(response.body));
+}
+
+Future<Course> getCourse(String token, String dbId, String id) async {
+  var response = await http.get("$BASE/$dbId/$id", headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode != 200) throw Exception(response.body);
+  return Course.fromJson(jsonDecode(response.body));
 }
