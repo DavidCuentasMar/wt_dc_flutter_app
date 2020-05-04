@@ -10,16 +10,21 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Text('Email: ${Provider.of<User>(context, listen: false).email}'),
-          FlatButton(
-              onPressed: () {
-                _logout();
-              },
-              child: Text('Logout'))
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Text('Email: ${Provider.of<User>(context, listen: false).email}'),
+            FlatButton(
+                onPressed: () {
+                  _logout();
+                },
+                child: Text('Logout'))
+          ],
+        ),
       ),
     );
   }

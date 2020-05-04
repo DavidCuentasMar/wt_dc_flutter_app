@@ -10,45 +10,88 @@ import 'screens/sign_in_screen.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  Future<User> loadUser() async {
+    var userObj = User('', '', false);
+    final prefs = await SharedPreferences.getInstance();
+    String email = prefs.getString('WT_DC_EMAIL');
+    String password = prefs.getString('WT_DC_PASSWORD');
+    print('loadUser - main.dart');
+    print(email);
+    if (email != null && password != null) {
+      userObj = User(email, password, true);
+    }
+        await new Future.delayed(const Duration(seconds: 5));
+    return userObj;
+  }
+
   @override
   Widget build(BuildContext context) {
-    Scaffold homeScreen = Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-      ),
-      body: HomeScreen(),
-    );
-    String email;
-    String password;
-    var userObj = User('', '', false);
-    SharedPreferences.getInstance().then((prefs) {
-      email = prefs.getString('WT_DC_EMAIL');
-      password = prefs.getString('WT_DC_PASSWORD');
-      if (email != null && password != null) {
-        userObj = User(email, password, true);
-      }
-    });
+    return FutureBuilder<User>(
+      future: loadUser(),
+      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+        List<Widget> children;
+        if (snapshot.hasData) {
+          return ChangeNotifierProvider<User>(
+            create: (context) => snapshot.data,
+            child: Consumer<User>(
+              builder: (context, currentUser, child) {
+                print('currentUser');
+                print(currentUser);
+                print(currentUser.isLogged);
+                currentUser.isLogged ? print('A') : print('B');
 
-    return ChangeNotifierProvider<User>(
-      create: (context) => userObj,
-      child: Consumer<User>(
-        builder: (context, currentUser, child) {
-          print('currentUser');
-          print(currentUser);
-          return MaterialApp(
-            title: "Login",
-            initialRoute: '/',
-            routes: {
-              '/': (context) =>
-                  currentUser.isLogged ? homeScreen : AuthScreen(),
-              '/home': (context) => homeScreen,
-              '/auth': (context) => AuthScreen(),
-              '/signin': (context) => SignInScreen()
-            },
+                return MaterialApp(
+                  title: "Login",
+                  initialRoute: '/',
+                  routes: {
+                    '/': (context) =>
+                        currentUser.isLogged ? HomeScreen() : AuthScreen(),
+                    '/home': (context) => HomeScreen(),
+                    '/auth': (context) => AuthScreen(),
+                    '/signin': (context) => SignInScreen()
+                  },
+                );
+              },
+            ),
           );
-        },
-      ),
+        } else if (snapshot.hasError) {
+          children = <Widget>[
+            Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 60,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text('Error: ${snapshot.error}'),
+            )
+          ];
+        } else {
+          children = <Widget>[
+            SizedBox(
+              child: CircularProgressIndicator(),
+              width: 60,
+              height: 60,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Text('Awaiting result...'),
+            )
+          ];
+        }
+        return MaterialApp(
+          title: "",
+          home: Container(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: children,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

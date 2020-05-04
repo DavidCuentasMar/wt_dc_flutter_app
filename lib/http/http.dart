@@ -18,7 +18,7 @@ Future<AuthResponse> signIn({String email, String password}) async {
 Future<AuthResponse> signUp(
     {String email, String password, String username, String name}) async {
   var response = await http.post("$BASE/signup",
-      body: jsonEncode({'email': email, 'password': password}),
+      body: jsonEncode({'email': email, 'password': password, 'username':username, 'name':name}),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

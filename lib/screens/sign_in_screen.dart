@@ -47,8 +47,8 @@ class SignInScreenState extends State<SignInScreen> {
                       if (_formKey.currentState.validate()) {
                         String email = controllerEmail.text;
                         String password = controllerPass.text.toString();
-                        controllerPass.clear();
-                        controllerEmail.clear();
+                        //controllerPass.clear();
+                        //controllerEmail.clear();
                         _saveNewUser(email, password);
                       }
                     },
@@ -62,9 +62,6 @@ class SignInScreenState extends State<SignInScreen> {
   }
 
   void _saveNewUser(String email, String password) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('WT_DC_EMAIL', email);
-    prefs.setString('WT_DC_PASSWORD', password);
     Provider.of<User>(context, listen: false).logIn(email, password);
     Navigator.pushNamedAndRemoveUntil(context, "/", (_) => false);
   }
