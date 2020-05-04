@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wt_dc_app/models/user_model.dart';
 
-import "package:wt_dc_app/http/http.dart";
-
 class AuthScreen extends StatefulWidget {
   @override
   AuthScreenState createState() => AuthScreenState();
@@ -150,8 +148,6 @@ class AuthScreenState extends State<AuthScreen> {
 
   Future<void> _authentication(
       String email, String password, bool fromInit) async {
-    signIn(email: email, password: password).then(print);
-
     final prefs = await SharedPreferences.getInstance();
     if (fromInit) {
       final email = prefs.getString('WT_DC_EMAIL');
