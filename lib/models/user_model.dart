@@ -11,17 +11,22 @@ class User extends ChangeNotifier {
   String _token;
   bool _isLogged;
 
-  User(this._email, this._password, this._isLogged);
+  User(this._email, this._password, this._token, this._isLogged);
 
   void logIn(String email, String password) async {
     try {
       AuthResponse userInfo = await signIn(email: email, password: password);
       this._email = userInfo.email;
       this._password = password;
+      this._token = userInfo.token;
+      this._username = userInfo.username;
       this._isLogged = true;
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('WT_DC_EMAIL', userInfo.email);
       prefs.setString('WT_DC_PASSWORD', password);
+      prefs.setString('WT_DC_TOKEN', userInfo.token);
+      prefs.setString('WT_DC_USERNAME', userInfo.username);
+
       notifyListeners();
     } catch (e) {
       print(e);
@@ -59,6 +64,21 @@ class User extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<BasicCourseInfo>> getCourses() async {
+    print('asf');
+    try {
+      print('GET COURSES - TOKEN');
+      print(this._token);
+      print(this._username);
+      print('EPA TEST 1');
+      await showCourses(this._token, this._username);
+      print('EPA TEST 2');
+      return null;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   bool userExists(String email, String password) {
     return this._email == email && this._password == password;
   }
@@ -68,4 +88,8 @@ class User extends ChangeNotifier {
   String get email => _email;
 
   String get password => _password;
+
+  void set username(String username) {
+    this._username = username;
+  }
 }

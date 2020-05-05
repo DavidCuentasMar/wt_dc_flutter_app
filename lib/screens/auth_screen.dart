@@ -19,12 +19,14 @@ class AuthScreenState extends State<AuthScreen> {
   final controllerName = new TextEditingController();
 
   Future<User> loadUser() async {
-    var userObj = User('', '', false);
+    var userObj = User('', '', '',  false);
     final prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('WT_DC_EMAIL');
     final password = prefs.getString('WT_DC_PASSWORD');
-    if (email != null && password != null) {
-      userObj = User(email, password, true);
+    final token = prefs.getString('WT_DC_TOKEN');
+
+    if (email != null && password != null && token != null) {
+      userObj = User(email, password, token, true);
     }
     await new Future.delayed(const Duration(seconds: 5));
     return userObj;

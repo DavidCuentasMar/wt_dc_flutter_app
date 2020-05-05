@@ -11,16 +11,20 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   Future<User> loadUser() async {
-    var userObj = User('', '', false);
+    var userObj = User('', '', '', false);
     final prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('WT_DC_EMAIL');
     String password = prefs.getString('WT_DC_PASSWORD');
+    String token = prefs.getString('WT_DC_TOKEN');
+    String username = prefs.getString('WT_DC_USERNAME');
+
     print('loadUser - main.dart');
     print(email);
-    if (email != null && password != null) {
-      userObj = User(email, password, true);
+    if (email != null && password != null && token != null && username != null) {
+      userObj = User(email, password, token, true);
+      userObj.username = username;
     }
-        await new Future.delayed(const Duration(seconds: 5));
+    await new Future.delayed(const Duration(seconds: 5));
     return userObj;
   }
 
