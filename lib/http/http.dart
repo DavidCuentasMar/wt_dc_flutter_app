@@ -13,19 +13,30 @@ Future<AuthResponse> signIn({String email, String password}) async {
         'Content-Type': 'application/json; charset=UTF-8',
       });
 
-  if (response.statusCode != 200) throw Exception(response.body);
+  if (response.statusCode != 200) {
+    throw Exception(jsonDecode(response.body)["error"]);
+  }
+
   return AuthResponse.fromJson(jsonDecode(response.body));
 }
 
 Future<AuthResponse> signUp(
     {String email, String password, String username, String name}) async {
   var response = await http.post("$BASE/signup",
-      body: jsonEncode({'email': email, 'password': password, 'username':username, 'name':name}),
+      body: jsonEncode({
+        'email': email,
+        'password': password,
+        'username': username,
+        'name': name
+      }),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
 
-  if (response.statusCode != 200) throw Exception(response.body);
+  if (response.statusCode != 200) {
+    throw Exception(jsonDecode(response.body)["error"]);
+  }
+
   return AuthResponse.fromJson(jsonDecode(response.body));
 }
 
@@ -47,8 +58,13 @@ Future<List<BasicCourseInfo>> showCourses(String token, String dbId) async {
     'Authorization': 'Bearer $token'
   });
 
-  if (response.statusCode != 200) throw Exception(response.body);
-  return List<BasicCourseInfo>.from(jsonDecode(response.body));
+  if (response.statusCode != 200) {
+    throw Exception(jsonDecode(response.body)["error"]);
+  }
+
+  return (jsonDecode(response.body) as List).map((i) {
+    return BasicCourseInfo.fromJson(i);
+  }).toList();
 }
 
 Future<Course> getCourse(String token, String dbId, String id) async {
@@ -57,6 +73,9 @@ Future<Course> getCourse(String token, String dbId, String id) async {
     'Authorization': 'Bearer $token'
   });
 
-  if (response.statusCode != 200) throw Exception(response.body);
+  if (response.statusCode != 200) {
+    throw Exception(jsonDecode(response.body)["error"]);
+  }
+
   return Course.fromJson(jsonDecode(response.body));
 }

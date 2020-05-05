@@ -19,16 +19,17 @@ class AuthScreenState extends State<AuthScreen> {
   final controllerName = new TextEditingController();
 
   Future<User> loadUser() async {
-    var userObj = User('', '', '',  false);
+    var userObj = User('', '', '', '', false);
     final prefs = await SharedPreferences.getInstance();
-    final email = prefs.getString('WT_DC_EMAIL');
-    final password = prefs.getString('WT_DC_PASSWORD');
-    final token = prefs.getString('WT_DC_TOKEN');
+    String name = prefs.getString('WT_DC_NAME');
+    String email = prefs.getString('WT_DC_EMAIL');
+    String token = prefs.getString('WT_DC_TOKEN');
+    String username = prefs.getString('WT_DC_USERNAME');
 
-    if (email != null && password != null && token != null) {
-      userObj = User(email, password, token, true);
+    if (email != null && username != null && token != null && name != null) {
+      userObj = User(name, email, token, username, true);
     }
-    await new Future.delayed(const Duration(seconds: 5));
+
     return userObj;
   }
 
@@ -102,7 +103,8 @@ class AuthScreenState extends State<AuthScreen> {
                   child: Text('Sign up')),
               FlatButton(
                   onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(context, "/signin", (_) => false);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/signin", (_) => false);
                   },
                   child: Text('Sign in'))
             ],

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wt_dc_app/models/user_model.dart';
 
+import '../http/http.dart';
 import '../http/types.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,24 +11,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  Future<List<BasicCourseInfo>> getCourses() async {
-    List<BasicCourseInfo> coursesList= List<BasicCourseInfo>();    
-    coursesList.add(BasicCourseInfo(id:1,name:'CALSE 1',professor:'A',students:1));
-    coursesList.add(BasicCourseInfo(id:1,name:'CALSE 2',professor:'A',students:1));
-    coursesList.add(BasicCourseInfo(id:1,name:'CALSE 3',professor:'A',students:1));
-    coursesList.add(BasicCourseInfo(id:1,name:'CALSE 4',professor:'A',students:1));
-    coursesList.add(BasicCourseInfo(id:1,name:'CALSE 5',professor:'A',students:1));
-    coursesList.add(BasicCourseInfo(id:1,name:'CALSE 6',professor:'A',students:1));
+  Future<List<BasicCourseInfo>> getCourses(BuildContext context) async {
+    List<BasicCourseInfo> coursesList =
+        await Provider.of<User>(context, listen: false).getCourses();
 
-     await Future.delayed(Duration(seconds: 2));
     return coursesList;
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<BasicCourseInfo>>(
-      future: getCourses(), // a previously-obtained Future<String> or null
-      builder: (BuildContext context, AsyncSnapshot<List<BasicCourseInfo>> snapshot) {
+      future:
+          getCourses(context), // a previously-obtained Future<String> or null
+      builder: (BuildContext context,
+          AsyncSnapshot<List<BasicCourseInfo>> snapshot) {
         List<Widget> children;
         if (snapshot.hasData) {
           children = <Widget>[];

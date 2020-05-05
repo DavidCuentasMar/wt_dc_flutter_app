@@ -5,26 +5,25 @@ import 'package:wt_dc_app/http/types.dart';
 
 class User extends ChangeNotifier {
   String _email;
-  String _password;
   String _username;
   String _name;
   String _token;
   bool _isLogged;
 
-  User(this._email, this._password, this._token, this._isLogged);
+  User(this._email, this._name, this._token, this._username, this._isLogged);
 
   void logIn(String email, String password) async {
     try {
       AuthResponse userInfo = await signIn(email: email, password: password);
       this._email = userInfo.email;
-      this._password = password;
       this._token = userInfo.token;
       this._username = userInfo.username;
       this._isLogged = true;
+
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('WT_DC_EMAIL', userInfo.email);
-      prefs.setString('WT_DC_PASSWORD', password);
       prefs.setString('WT_DC_TOKEN', userInfo.token);
+      prefs.setString("WT_DC_NAME", userInfo.name);
       prefs.setString('WT_DC_USERNAME', userInfo.username);
 
       notifyListeners();
@@ -40,7 +39,6 @@ class User extends ChangeNotifier {
           email: email, password: password, username: username, name: name);
 
       this._email = userInfo.email;
-      this._password = password;
       this._username = username;
       this._name = name;
       this._token = userInfo.token;
@@ -49,7 +47,6 @@ class User extends ChangeNotifier {
       print('USER REGISTER FROM CONTROLLER');
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('WT_DC_EMAIL', email);
-      prefs.setString('WT_DC_PASSWORD', password);
       prefs.setString('WT_DC_TOKEN', userInfo.token);
       prefs.setString('WT_DC_USERNAME', username);
       prefs.setString('WT_DC_NAME', name);
@@ -70,26 +67,18 @@ class User extends ChangeNotifier {
       print('GET COURSES - TOKEN');
       print(this._token);
       print(this._username);
-      print('EPA TEST 1');
-      await showCourses(this._token, this._username);
-      print('EPA TEST 2');
-      return null;
+
+      return showCourses(this._token, this._username);
     } catch (e) {
       print(e);
     }
   }
 
-  bool userExists(String email, String password) {
-    return this._email == email && this._password == password;
-  }
-
   bool get isLogged => _isLogged;
-
+  String get name => _name;
   String get email => _email;
 
-  String get password => _password;
-
-  void set username(String username) {
+  set username(String username) {
     this._username = username;
   }
 }
