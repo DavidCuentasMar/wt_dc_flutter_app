@@ -21,6 +21,7 @@ class SignInScreenState extends State<SignInScreen> {
       ),
       body: Container(
         child: Container(
+          padding: const EdgeInsets.all(10.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -28,6 +29,7 @@ class SignInScreenState extends State<SignInScreen> {
                 Expanded(
                   child: TextFormField(
                       controller: controllerEmail,
+                      decoration: InputDecoration(labelText: 'Email'),
                       validator: (value) {
                         if (value.isEmpty) return 'Please, enter an email!';
                         return null;
@@ -36,6 +38,8 @@ class SignInScreenState extends State<SignInScreen> {
                 Expanded(
                   child: TextFormField(
                     controller: controllerPass,
+                    decoration: InputDecoration(labelText: 'Password'),
+                    obscureText: true,
                     validator: (value) {
                       if (value.isEmpty) return 'Please, enter a password!';
                       return null;

@@ -47,6 +47,7 @@ class AuthScreenState extends State<AuthScreen> {
         title: Text('Auth'),
       ),
       body: Container(
+        padding: const EdgeInsets.all(10.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -54,6 +55,7 @@ class AuthScreenState extends State<AuthScreen> {
               Expanded(
                 child: TextFormField(
                     controller: controllerEmail,
+                    decoration: InputDecoration(labelText: 'Email'),
                     validator: (value) {
                       if (value.isEmpty) return 'Please, enter an email!';
                       return null;
@@ -62,6 +64,8 @@ class AuthScreenState extends State<AuthScreen> {
               Expanded(
                 child: TextFormField(
                   controller: controllerPass,
+                  obscureText: true,
+                  decoration: InputDecoration(labelText: 'Password'),
                   validator: (value) {
                     if (value.isEmpty) return 'Please, enter a password!';
                     return null;
@@ -71,6 +75,7 @@ class AuthScreenState extends State<AuthScreen> {
               Expanded(
                 child: TextFormField(
                   controller: controllerUsername,
+                  decoration: InputDecoration(labelText: 'Username'),
                   validator: (value) {
                     if (value.isEmpty) return 'Please, enter an username!';
                     return null;
@@ -80,6 +85,7 @@ class AuthScreenState extends State<AuthScreen> {
               Expanded(
                 child: TextFormField(
                   controller: controllerName,
+                  decoration: InputDecoration(labelText: 'Name'),
                   validator: (value) {
                     if (value.isEmpty) return 'Please, enter an name!';
                     return null;
