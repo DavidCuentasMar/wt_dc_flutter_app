@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wt_dc_app/models/user_model.dart';
 
-import '../http/http.dart';
 import '../http/types.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -74,6 +73,35 @@ class HomeScreenState extends State<HomeScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Text('Home'),
+            actions: <Widget>[
+              // action button
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                Provider.of<User>(context, listen: false).addNewCouse();
+                },
+              ),
+              // action button
+            ],
+          ),
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  child: Text('MENU'),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                ),
+                ListTile(
+                  title: Text('Reset Database'),
+                  onTap: () {
+                    Provider.of<User>(context, listen: false).resetDB();
+                  },
+                ),
+              ],
+            ),
           ),
           body: Center(
             child: Column(

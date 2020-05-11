@@ -51,6 +51,17 @@ Future<CheckTokenResponse> checkToken(String token) async {
 
 // COURSES
 
+Future<bool> resetData(String token, String dbId) async {
+  var response =
+      await http.get("$BASE/$dbId/restart", headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': 'Bearer $token'
+  });
+  print('asd');
+  print(response.body);
+  return false;
+}
+
 Future<List<BasicCourseInfo>> showCourses(String token, String dbId) async {
   var response =
       await http.get("$BASE/$dbId/courses", headers: <String, String>{
@@ -78,4 +89,18 @@ Future<Course> getCourse(String token, String dbId, String id) async {
   }
 
   return Course.fromJson(jsonDecode(response.body));
+}
+
+Future<BasicCourseInfo> addCouse(String token, String dbId) async {
+  var response =
+      await http.post("$BASE/$dbId/courses", headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode != 200) {
+    throw Exception(jsonDecode(response.body)["error"]);
+  }
+  print(response.body);
+  return BasicCourseInfo.fromJson(jsonDecode(response.body));
 }

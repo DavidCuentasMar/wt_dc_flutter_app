@@ -12,7 +12,7 @@ class SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final controllerEmail = new TextEditingController();
   final controllerPass = new TextEditingController();
-
+  bool remember = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,12 +28,13 @@ class SignInScreenState extends State<SignInScreen> {
               children: <Widget>[
                 Expanded(
                   child: TextFormField(
-                      controller: controllerEmail,
-                      decoration: InputDecoration(labelText: 'Email'),
-                      validator: (value) {
-                        if (value.isEmpty) return 'Please, enter an email!';
-                        return null;
-                      }),
+                    controller: controllerEmail,
+                    decoration: InputDecoration(labelText: 'Email'),
+                    validator: (value) {
+                      if (value.isEmpty) return 'Please, enter an email!';
+                      return null;
+                    },
+                  ),
                 ),
                 Expanded(
                   child: TextFormField(
@@ -43,6 +44,16 @@ class SignInScreenState extends State<SignInScreen> {
                     validator: (value) {
                       if (value.isEmpty) return 'Please, enter a password!';
                       return null;
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: Checkbox(
+                    value: remember,
+                    onChanged: (bool value) {
+                      setState(() {
+                        remember = value;
+                      });
                     },
                   ),
                 ),
@@ -66,7 +77,7 @@ class SignInScreenState extends State<SignInScreen> {
   }
 
   void _saveNewUser(String email, String password) async {
-    Provider.of<User>(context, listen: false).logIn(email, password);
+    Provider.of<User>(context, listen: false).logIn(email, password, remember);
     Navigator.pushNamedAndRemoveUntil(context, "/", (_) => false);
   }
 }

@@ -12,7 +12,7 @@ class User extends ChangeNotifier {
 
   User(this._email, this._name, this._token, this._username, this._isLogged);
 
-  void logIn(String email, String password) async {
+  void logIn(String email, String password, bool remember) async {
     try {
       AuthResponse userInfo = await signIn(email: email, password: password);
       this._email = userInfo.email;
@@ -20,18 +20,35 @@ class User extends ChangeNotifier {
       this._username = userInfo.username;
       this._isLogged = true;
 
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('WT_DC_EMAIL', userInfo.email);
-      prefs.setString('WT_DC_TOKEN', userInfo.token);
-      prefs.setString("WT_DC_NAME", userInfo.name);
-      prefs.setString('WT_DC_USERNAME', userInfo.username);
-
+      if (remember) {
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('WT_DC_EMAIL', userInfo.email);
+        prefs.setString('WT_DC_TOKEN', userInfo.token);
+        prefs.setString("WT_DC_NAME", userInfo.name);
+        prefs.setString('WT_DC_USERNAME', userInfo.username);
+      }
       notifyListeners();
     } catch (e) {
       print(e);
     }
   }
 
+  void resetDB() async {
+    try {
+      bool resetDb = await resetData(this._token, this._username);
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+    void addNewCouse() async {
+    try {
+      BasicCourseInfo newCourse = await addCouse(this._token, this._username);
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
   void register(
       String email, String password, String username, String name) async {
     try {
