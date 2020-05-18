@@ -30,9 +30,13 @@ class HomeScreenState extends State<HomeScreen> {
           snapshot.data.forEach(
             (courseObj) {
               children.add(
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text(courseObj.name),
+                ListTile(
+                  title: Text(courseObj.name),
+                  onTap: () {
+                    setState(() {
+                      actualCourse = courseObj;
+                    });
+                  },
                 ),
               );
             },
