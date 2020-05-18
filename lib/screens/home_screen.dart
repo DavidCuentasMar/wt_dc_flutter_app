@@ -10,6 +10,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  BasicCourseInfo actualCourse;
+
   Future<List<BasicCourseInfo>> getCourses(BuildContext context) async {
     List<BasicCourseInfo> coursesList =
         await Provider.of<User>(context, listen: false).getCourses();
