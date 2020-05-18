@@ -68,18 +68,20 @@ class HomeScreenState extends State<HomeScreen> {
             )
           ];
         }
-        children.add(
-          FlatButton(
-            onPressed: () {
-              _logout();
-            },
-            child: Text('Logout'),
-          ),
-        );
+
         return Scaffold(
           appBar: AppBar(
             title: Text('Home'),
             actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  _logout();
+                },
+                child: Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
               // action button
               IconButton(
                 icon: Icon(Icons.add),
