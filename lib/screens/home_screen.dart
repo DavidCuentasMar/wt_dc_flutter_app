@@ -35,6 +35,7 @@ class HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   title: Text(courseObj.name),
                   onTap: () {
+                    print(courseObj.name);
                     setState(() {
                       actualCourse = courseObj;
                     });
@@ -53,6 +54,21 @@ class HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: Text('Error: ${snapshot.error}'),
+            ),
+            FlatButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              disabledColor: Colors.grey,
+              disabledTextColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
+              splashColor: Colors.blueAccent,
+              onPressed: () {
+                //REFRESH TOKEN
+              },
+              child: Text(
+                "Refresh Token",
+                style: TextStyle(fontSize: 20.0),
+              ),
             )
           ];
         } else {
@@ -86,7 +102,7 @@ class HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () {
-                Provider.of<User>(context, listen: false).addNewCouse();
+                  Provider.of<User>(context, listen: false).addNewCouse();
                 },
               ),
               // action button

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wt_dc_app/models/user_model.dart';
 import 'package:wt_dc_app/screens/auth_screen.dart';
+import 'package:wt_dc_app/screens/course_details_screen.dart';
 import 'package:wt_dc_app/screens/home_screen.dart';
 
 import 'screens/sign_in_screen.dart';
@@ -53,7 +54,8 @@ class MyApp extends StatelessWidget {
                         currentUser.isLogged ? HomeScreen() : AuthScreen(),
                     '/home': (context) => HomeScreen(),
                     '/auth': (context) => AuthScreen(),
-                    '/signin': (context) => SignInScreen()
+                    '/signin': (context) => SignInScreen(),
+                    '/signin': (context) => CourseDetailsScreen()
                   },
                 );
               },
